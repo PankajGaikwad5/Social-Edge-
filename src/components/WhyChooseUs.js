@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const PILLARS = [
-  { title: "Data", body: "Every decision starts with the numbers your market is already giving you." },
-  { title: "Insights", body: "We read behaviour, not just dashboards, to find what actually moves people." },
-  { title: "Creativity", body: "Stories and visuals built to stop the scroll and stay remembered." },
-  { title: "Expertise", body: "Specialists across performance, content and brand, working as one team." },
+  { title: "Marketing", body: "Strategic campaigns that build visibility, engagement and growth." },
+  { title: "Creative Direction", body: "Distinctive visual identities shaped by vision and purpose." },
+  { title: "Content & Strategy", body: "Meaningful storytelling backed by thoughtful strategy." },
+  { title: "Video Production", body: "Compelling films that bring brand stories to life." },
 ];
 
 // Desktop line breaks follow the design; full lines are justified, sentence ends stay ragged
@@ -27,7 +27,7 @@ const COPY_LINES = [
   { text: "authentic growth." },
 ];
 
-const BADGE_TEXT ="CREATIVITY • EXPERTISE • DATA • INSIGHTS • ";
+const BADGE_TEXT = "MARKETING • CREATIVE • CONTENT • VIDEO • ";
 
 // Each headline line is masked so its text can rise into place
 function Line({ children }) {
@@ -257,16 +257,14 @@ export default function WhyChooseUs() {
           </p>
 
           <h2 className="why-heading mt-8 font-display text-[9vw] uppercase leading-[0.98] tracking-tight text-white sm:text-[clamp(3rem,4.6vw,5.5rem)]">
-            <Line>Blending</Line>
-            <Line>
-              Data, <span className="text-edge-stone-60">Insights,</span>
-            </Line>
-            <Line>
-              <span className="text-edge-stone-60">Creativity</span>
-            </Line>
-            <Line>
-              <span className="text-edge-stone">&amp;</span> Expertise
-            </Line>
+            {/* Two short statements, the second set in stone and given a little air above it */}
+            <Line>A distinct</Line>
+            <Line>perspective.</Line>
+            <span className="mt-[0.1em] block text-edge-stone-60">
+              <Line>A more</Line>
+              <Line>considered</Line>
+              <Line>approach.</Line>
+            </span>
           </h2>
 
           <div className="why-actions mt-9 flex items-center gap-6 sm:gap-11">

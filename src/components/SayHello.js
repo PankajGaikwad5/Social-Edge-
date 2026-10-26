@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight, ArrowUpRight, MessageCircle } from "lucide-react";
 import { EMAIL, WHATSAPP } from "@/lib/contact";
+import Magnetic from "@/components/Magnetic";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -226,26 +227,29 @@ export default function SayHello() {
           </p>
 
           <div className="hello-actions mt-11 flex flex-wrap items-center gap-3.5">
-            <Link
-              href="/contact"
-              className={cn(
-                "group flex h-16 items-center gap-5 rounded-full bg-white pl-7 pr-2 sm:h-20 sm:gap-6 sm:pl-9 sm:pr-2.5 text-edge-black transition-transform duration-500 hover:-translate-y-0.5 lg:h-22",
-                EASE_OUT
-              )}
-            >
-              <span className={cn("font-display text-xl sm:text-[clamp(1.5rem,1.55vw,1.9rem)] leading-none transition-transform duration-500 group-hover:translate-x-1", EASE_OUT)}>
-                Start a project
-              </span>
-              <span
+            <Magnetic>
+              <Link
+                href="/contact"
                 className={cn(
-                  "relative flex size-12 items-center sm:size-15 justify-center overflow-hidden rounded-full bg-edge-stone text-white transition-transform duration-500 group-hover:scale-[1.03] lg:size-17",
+                  "group flex h-16 items-center gap-5 rounded-full bg-white pl-7 pr-2 text-edge-black transition-[gap] duration-500 hover:gap-7 sm:h-20 sm:gap-6 sm:pl-9 sm:pr-2.5 sm:hover:gap-8.5 lg:h-22",
                   EASE_OUT
                 )}
               >
-                <ArrowRight size={22} strokeWidth={1.75} className={cn("absolute transition-transform duration-500 group-hover:translate-x-[220%]", EASE_OUT)} />
-                <ArrowRight size={22} strokeWidth={1.75} className={cn("absolute -translate-x-[220%] transition-transform duration-500 group-hover:translate-x-0", EASE_OUT)} />
-              </span>
-            </Link>
+                <span className={cn("font-display text-xl sm:text-[clamp(1.5rem,1.55vw,1.9rem)] leading-none", EASE_OUT)}>
+                  Start a project
+                </span>
+                <span
+                  data-magnetic-inner
+                  className={cn(
+                    "relative flex size-12 items-center sm:size-15 justify-center overflow-hidden rounded-full bg-edge-stone text-white lg:size-17",
+                    EASE_OUT
+                  )}
+                >
+                  <ArrowRight size={22} strokeWidth={1.75} className={cn("absolute transition-transform duration-500 group-hover:translate-x-[220%]", EASE_OUT)} />
+                  <ArrowRight size={22} strokeWidth={1.75} className={cn("absolute -translate-x-[220%] transition-transform duration-500 group-hover:translate-x-0", EASE_OUT)} />
+                </span>
+              </Link>
+            </Magnetic>
 
             <a
               href={WHATSAPP}

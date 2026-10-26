@@ -158,3 +158,17 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .drift-column { animation: none; }
 }
+
+/* About values cards: per-card corner light, driven by --tone / --tone-light on each card */
+.value-glow-rest {
+  background: radial-gradient(90% 85% at 100% 0%, color-mix(in srgb, var(--tone) 22%, transparent) 0%, transparent 70%);
+}
+.value-glow-hover {
+  background: radial-gradient(
+    125% 110% at 100% 0%,
+    var(--tone-light) 0%,
+    var(--tone) 26%,
+    color-mix(in srgb, var(--tone) 32%, transparent) 50%,
+    transparent 74%
+  );
+}
