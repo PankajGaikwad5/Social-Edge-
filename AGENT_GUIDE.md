@@ -27,10 +27,10 @@ Read this together with `AGENTS.md` and `BRAND_GUIDELINES.md` before touching an
 
 | Route | File | Sections (components, in order) |
 |---|---|---|
-| `/` | `src/app/page.js` | `Hero` → `ServicesMarquee` → `WhyChooseUs` → `WhatWeDo` → `CaseStudies` → `Testimonials` → `Partners` → `SayHello` |
+| `/` | `src/app/page.js` | `Hero` → `ServicesMarquee` → `WhyChooseUs` → `WhatWeDo` → `CaseStudies` → `Testimonials` → `Partners` |
 | `/about` | `src/app/about/page.js` | `AboutHero` → `AboutStats` → `AboutValues` → `AboutVision` → `AboutTeam` → `AboutFaq` → `AboutMore` |
 | `/work` | `src/app/work/page.js` | `WorkHero` → `WorkCases` → `WorkServices` → `WorkIndustries` → `WorkStudio` |
-| all | `src/app/layout.js` | `Navbar`, page, `Footer` inside `SmoothScroll` |
+| all | `src/app/layout.js` | `Navbar`, page, `Footer` (which renders `SayHello` first) inside `SmoothScroll` |
 
 Notes on the trickier ones:
 - **`Hero.js`**: desktop is a pinned scroll sequence (`lib/heroTimeline.js` holds the steps): media wall → centre film tile expands into a full-screen showreel (`ShowreelFilm.js`). Below `lg` a separate `MobileHero` renders (drifting photo wall, copy, showreel card). Don't merge them.

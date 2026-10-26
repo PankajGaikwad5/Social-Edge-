@@ -23,7 +23,6 @@ export default function AboutPage() {
       <AboutTeam />
       <AboutFaq />
       <AboutMore />
-      <SayHello/>
     </main>
   );
 }

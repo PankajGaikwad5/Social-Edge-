@@ -5,7 +5,6 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import CaseStudies from "@/components/CaseStudies";
 import Testimonials from "@/components/Testimonials";
 import Partners from "@/components/Partners";
-import SayHello from "@/components/SayHello";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
       <CaseStudies />
       <Testimonials />
       <Partners />
-      <SayHello />
     </main>
   );
 }
