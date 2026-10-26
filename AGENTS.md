@@ -26,3 +26,9 @@ Before generating or modifying any UI component or style, **YOU MUST READ AND AD
    - **NEVER MIX** filled icons, outline icons, emojis, or hand-drawn icons in the same interface.
 4. **Gradients (135°):**
    - Only use approved 135° gradients (`Black Depth`, `Warm Stone`, `Ivory Fade`) for light/depth/material — never to fill empty space.
+
+---
+
+# Project handoff
+
+Before starting work, also read [AGENT_GUIDE.md](./AGENT_GUIDE.md): page map, shared components, owner preferences, theming and known traps.

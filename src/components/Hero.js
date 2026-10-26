@@ -17,6 +17,7 @@ import {
 import { Award, ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import ShowreelFilm, { FILMS } from "@/components/ShowreelFilm";
 import { TIMELINE, WALL_COVERED, easeInOutCubic, phase } from "@/lib/heroTimeline";
+import Typewriter from "@/components/Typewriter";
 import { cn } from "@/lib/utils";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 
@@ -410,42 +411,6 @@ function MediaColumn({ column, progress, dimmed, isDesktop, className, film, sou
   );
 }
 
-function Typewriter() {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [text, setText] = useState("");
-  const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    const word = WORDS[wordIndex];
-    let delay = deleting ? 60 : 120;
-    if (!deleting && text === word) delay = 1800;
-    if (deleting && text === "") delay = 350;
-
-    const timer = setTimeout(() => {
-      if (!deleting && text === word) {
-        setDeleting(true);
-      } else if (deleting && text === "") {
-        setDeleting(false);
-        setWordIndex((i) => (i + 1) % WORDS.length);
-      } else {
-        setText(word.slice(0, text.length + (deleting ? -1 : 1)));
-      }
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [text, deleting, wordIndex]);
-
-  return (
-    <span className="inline-flex items-center" aria-label={WORDS.join(", ")}>
-      <span aria-hidden="true">{text}</span>
-      <span
-        aria-hidden="true"
-        className="ml-[0.06em] inline-block h-[0.9em] w-0.5 animate-pulse bg-edge-stone/80"
-      />
-    </span>
-  );
-}
-
 const lerp = (a, b, t) => a + (b - a) * t;
 
 const fadeUp = (delay) => ({
@@ -568,7 +533,7 @@ function DesktopHero() {
                 We help businesses with
               </span>
               <span className="mt-[0.12em] block min-h-[1.1em] whitespace-nowrap text-[clamp(3.75rem,10vw,13rem)] leading-[1.1] text-edge-stone">
-                <Typewriter />
+                <Typewriter words={WORDS} />
               </span>
             </motion.h1>
 
@@ -756,7 +721,7 @@ function MobileHero() {
           <motion.h1 {...fadeUp(0.35)} className="mt-4 font-display font-normal text-white">
             <span className="block text-[clamp(1.6rem,7.4vw,2.6rem)] leading-[1.15]">We help businesses with</span>
             <span className="block min-h-[1.15em] whitespace-nowrap text-[clamp(3rem,14.5vw,5.5rem)] leading-[1.15] text-edge-stone">
-              <Typewriter />
+              <Typewriter words={WORDS} />
             </span>
           </motion.h1>
 

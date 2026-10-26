@@ -194,3 +194,4 @@ body {
   box-shadow: 0 28px 60px -30px color-mix(in srgb, var(--edge-stone) 55%, transparent);
 }
 .chapter-card:hover::after { opacity: 1; }
+
