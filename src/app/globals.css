@@ -1,29 +1,71 @@
 @import "tailwindcss";
 
+/* Fixed brand values. Theme roles below point at these */
 :root {
-  --background: #f4f3ef;
-  --foreground: #090909;
-
-  /* Brand Tokens */
-  --edge-black: #090909;
-  --edge-white: #ffffff;
+  --ink: #090909;
+  --snow: #ffffff;
   --soft-ivory: #f4f3ef;
   --edge-stone: #a5947c;
   --edge-stone-80: #b7a996;
-  --edge-stone-60: #c9beb0;
   --edge-stone-40: #dbd4cb;
   --edge-stone-20: #edeae5;
-
-  /* Secondary Greys */
-  --graphite: #4d4d4d;
   --concrete: #848484;
-  --mist: #c9c9c7;
   --paper: #e8e7e3;
 
   /* Functional Only */
   --status-positive: #18b86a;
   --status-negative: #f04444;
   --status-warning: #d89a38;
+}
+
+/*
+  Theme roles. The palette is authored dark-first: "edge-black" is the canvas and "white" the ink.
+  Light theme swaps those roles (and the two greys) so every component follows without class changes.
+  .surface-dark pins media-backed areas (hero, photo cards, service tiles) to the dark roles in either theme.
+*/
+:root,
+.surface-dark {
+  color-scheme: dark;
+  --edge-black: var(--ink);
+  --color-white: var(--snow);
+  --graphite: #4d4d4d;
+  --mist: #c9c9c7;
+  --edge-stone-60: #c9beb0;
+  --depth-from: #090909;
+  --depth-to: #1a1a1a;
+  --logo-filter: none;
+  --background: var(--ink);
+  --foreground: var(--soft-ivory);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --edge-black: var(--soft-ivory);
+    --color-white: var(--ink);
+    --graphite: #c9c9c7;
+    --mist: #4d4d4d;
+    --edge-stone-60: var(--edge-stone);
+    --depth-from: #ffffff;
+    --depth-to: #f4f3ef;
+    --logo-filter: invert(1);
+    --background: var(--soft-ivory);
+    --foreground: var(--ink);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --edge-black: var(--soft-ivory);
+  --color-white: var(--ink);
+  --graphite: #c9c9c7;
+  --mist: #4d4d4d;
+  --edge-stone-60: var(--edge-stone);
+  --depth-from: #ffffff;
+  --depth-to: #f4f3ef;
+  --logo-filter: invert(1);
+  --background: var(--soft-ivory);
+  --foreground: var(--ink);
 }
 
 @theme inline {
@@ -35,6 +77,8 @@
   /* Core Brand Colors */
   --color-edge-black: var(--edge-black);
   --color-soft-ivory: var(--soft-ivory);
+  --color-ink: var(--ink);
+  --color-snow: var(--snow);
   --color-edge-stone: var(--edge-stone);
   --color-edge-stone-80: var(--edge-stone-80);
   --color-edge-stone-60: var(--edge-stone-60);
@@ -53,32 +97,29 @@
   --color-status-warning: var(--status-warning);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --background: #090909;
-    --foreground: #f4f3ef;
-  }
-}
-
-:root[data-theme="dark"] {
-  --background: #090909;
-  --foreground: #f4f3ef;
-}
-
-:root[data-theme="light"] {
-  --background: #f4f3ef;
-  --foreground: #090909;
-}
-
 body {
   background: var(--background);
+  transition: background-color 0.4s ease, color 0.4s ease;
   color: var(--foreground);
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
 
-/* Soft top/bottom falloff for the hero media wall */
-.wall-fade-top { background: linear-gradient(to bottom, rgb(9 9 9 / 0.65), rgb(9 9 9 / 0)); }
-.wall-fade-bottom { background: linear-gradient(to top, rgb(9 9 9 / 0.8), rgb(9 9 9 / 0)); }
+/* Approved 135° gradients — light, depth or material only, never filler */
+@utility bg-black-depth { background-image: linear-gradient(135deg, var(--depth-from) 0%, var(--depth-to) 100%); }
+@utility bg-warm-stone { background-image: linear-gradient(135deg, #a5947c 0%, #c9beb0 100%); }
+@utility bg-ivory-fade { background-image: linear-gradient(135deg, #ffffff 0%, #f4f3ef 100%); }
+
+/* Faint 40px grid laid over service tiles */
+@utility tile-grid {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%23ffffff' stroke-opacity='0.07'/%3E%3C/svg%3E");
+}
+
+/* White wordmark, inverted to ink on light surfaces */
+.logo-adaptive { filter: var(--logo-filter); }
+
+/* Soft top/bottom falloff for the hero media wall; follows the canvas colour, so it turns ivory in light theme */
+.wall-fade-top { background: linear-gradient(to bottom, color-mix(in srgb, var(--edge-black) 65%, transparent), transparent); }
+.wall-fade-bottom { background: linear-gradient(to top, color-mix(in srgb, var(--edge-black) 80%, transparent), transparent); }
 
 @keyframes scroll-cue {
   0% { transform: scaleY(0); transform-origin: top; }
@@ -91,4 +132,29 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .scroll-cue { animation: none; }
+}
+
+/* Brief colour cross-fade while the theme toggles */
+.theme-switching,
+.theme-switching * {
+  transition-property: color, background-color, border-color, fill, stroke, filter !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: ease !important;
+}
+
+/* Swipe rows without a visible scrollbar */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Mobile hero: wall settles into the canvas under the copy */
+.hero-fade-mobile {
+  background: linear-gradient(to top, var(--edge-black) 32%, color-mix(in srgb, var(--edge-black) 78%, transparent) 58%, transparent);
+}
+
+/* Mobile hero wall: each column loops its doubled track */
+@keyframes drift-column { to { transform: translate3d(0, -50%, 0); } }
+.drift-column { animation: drift-column 45s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-column { animation: none; }
 }

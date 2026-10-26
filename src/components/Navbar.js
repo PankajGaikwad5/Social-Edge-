@@ -16,7 +16,7 @@ const NAV_LINKS = [
   { label: "Career", href: "/career" },
 ];
 
-const SERVICES = [
+export const SERVICES = [
   { label: "Social Media Management", href: "/services/social-media" },
   { label: "Performance Marketing", href: "/services/performance-marketing" },
   { label: "Content & Video Production", href: "/services/content-production" },
@@ -26,19 +26,14 @@ const SERVICES = [
 ];
 
 const iconButton =
-  "flex size-9.5 items-center justify-center rounded-full border border-white/20 text-white transition-colors duration-300 hover:border-white/50";
+  "flex size-9 items-center sm:size-9.5 justify-center rounded-full border border-white/20 text-white transition-colors duration-300 hover:border-white/50";
 
 const linkText = "text-[13px] font-medium uppercase tracking-[0.02em] text-white transition-colors duration-300 hover:text-edge-stone";
 
 function Logo() {
   return (
     <Link href="/" className="flex flex-col leading-none" aria-label="Social Edge home">
-      <span className="font-display text-[1.6rem] font-bold tracking-[0.06em] text-white">
-        SOCIAL<span className="text-edge-stone">EDGE</span>
-      </span>
-      <span className="mt-1 text-center text-[0.5rem] font-medium tracking-[0.5em] text-concrete">
-        MEDIA AGENCY
-      </span>
+      <img src="/logos/logowhite.png" alt="social edge logo" className="logo-adaptive w-23 sm:w-[140px]" />
     </Link>
   );
 }
@@ -92,41 +87,51 @@ function ServicesMenu() {
   );
 }
 
+const LIGHT_QUERY = "(prefers-color-scheme: light)";
+
+// Follows the OS until the visitor picks a theme; the pick is applied before paint by the script in layout.js
 function subscribeToTheme(callback) {
   const observer = new MutationObserver(callback);
   observer.observe(document.documentElement, { attributeFilter: ["data-theme"] });
-  return () => observer.disconnect();
+  const media = window.matchMedia(LIGHT_QUERY);
+  media.addEventListener("change", callback);
+  return () => {
+    observer.disconnect();
+    media.removeEventListener("change", callback);
+  };
+}
+
+function getTheme() {
+  return document.documentElement.dataset.theme ?? (window.matchMedia(LIGHT_QUERY).matches ? "light" : "dark");
 }
 
 function ThemeToggle() {
-  const theme = useSyncExternalStore(
-    subscribeToTheme,
-    () => document.documentElement.dataset.theme ?? "dark",
-    () => "dark"
-  );
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("theme");
-      if (stored === "light" || stored === "dark") {
-        document.documentElement.dataset.theme = stored;
-      }
-    } catch {}
-  }, []);
+  const theme = useSyncExternalStore(subscribeToTheme, getTheme, () => null);
 
   function toggle() {
-    const next = theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
+    const next = getTheme() === "dark" ? "light" : "dark";
+    const root = document.documentElement;
+
+    // Cross-fade colours for the switch only, so normal hovers keep their own timing
+    root.classList.add("theme-switching");
+    root.dataset.theme = next;
+    setTimeout(() => root.classList.remove("theme-switching"), 450);
+
     try {
       localStorage.setItem("theme", next);
     } catch {}
   }
 
-  const Icon = theme === "dark" ? Sun : Moon;
+  const Icon = theme === "light" ? Moon : Sun;
 
   return (
-    <button type="button" onClick={toggle} className={iconButton} aria-label="Toggle theme">
-      <Icon size={15} strokeWidth={1.75} />
+    <button
+      type="button"
+      onClick={toggle}
+      className={iconButton}
+      aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
+    >
+      <Icon size={15} strokeWidth={1.75} className={cn("transition-opacity duration-300", !theme && "opacity-0")} />
     </button>
   );
 }
@@ -200,7 +205,7 @@ export default function Navbar() {
             )}
           </ul>
 
-          <div className="flex items-center gap-3 lg:gap-5 xl:gap-10">
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-5 xl:gap-10">
             <button
               type="button"
               onClick={() => setSearchOpen((v) => !v)}
@@ -209,12 +214,12 @@ export default function Navbar() {
             >
               <Search size={15} strokeWidth={1.75} />
             </button>
-            <div className="hidden sm:block">
+            <div>
               <ThemeToggle />
             </div>
             <Link
               href="/contact"
-              className="hidden h-11 items-center rounded-full bg-edge-stone px-6 text-xs font-bold uppercase tracking-[0.12em] text-edge-black transition-colors duration-300 hover:bg-edge-stone-80 sm:inline-flex"
+              className="inline-flex h-9 items-center rounded-full bg-edge-stone px-4 text-[11px] font-bold uppercase tracking-[0.1em] text-ink transition-colors duration-300 hover:bg-edge-stone-80 sm:h-11 sm:px-6 sm:text-xs sm:tracking-[0.12em]"
             >
               Hire Us
             </Link>
@@ -277,7 +282,7 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="flex-1 rounded-full bg-edge-stone py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-edge-black"
+                className="flex-1 rounded-full bg-edge-stone py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-ink"
               >
                 Hire Us
               </Link>

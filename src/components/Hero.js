@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  AnimatePresence,
   animate,
   motion,
   useAnimationFrame,
@@ -13,7 +14,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { Award } from "lucide-react";
+import { Award, ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import ShowreelFilm, { FILMS } from "@/components/ShowreelFilm";
 import { TIMELINE, WALL_COVERED, easeInOutCubic, phase } from "@/lib/heroTimeline";
 import { cn } from "@/lib/utils";
@@ -122,7 +123,7 @@ function Tile({ tile, paused }) {
     <div className="pb-2.5">
       <div
         className={cn(
-          "relative overflow-hidden bg-[#141414]",
+          "relative overflow-hidden bg-black-depth",
           tile.shape === "portrait" ? "aspect-4/5" : "aspect-square"
         )}
       >
@@ -247,7 +248,7 @@ function FilmTile({ tile, progress, film, soundOn }) {
         data-film-box
         style={{ x, y, scaleX, scaleY }}
         className={cn(
-          "relative overflow-hidden bg-[#141414] will-change-transform",
+          "relative overflow-hidden bg-black-depth will-change-transform",
           tile.shape === "portrait" ? "aspect-4/5" : "aspect-square"
         )}
       >
@@ -453,7 +454,7 @@ const fadeUp = (delay) => ({
   transition: { duration: 1, delay, ease: [0.22, 1, 0.36, 1] },
 });
 
-export default function Hero() {
+function DesktopHero() {
   const sectionRef = useRef(null);
   const isDesktop = useIsDesktop();
   const stageRef = useRef(null);
@@ -579,16 +580,16 @@ export default function Hero() {
               and more
             </motion.p>
 
-            <motion.div {...fadeUp(0.65)} className="mt-10 flex flex-wrap items-center gap-3">
+            <motion.div {...fadeUp(0.65)} className="mt-8 flex flex-wrap items-center gap-2.5 sm:mt-10 sm:gap-3">
               <Link
                 href="/contact"
-                className="inline-flex h-11.75 items-center rounded-full bg-white px-7.5 text-xs font-normal uppercase tracking-[0.2em] text-edge-black transition-colors duration-300 hover:bg-soft-ivory"
+                className="inline-flex h-11 items-center rounded-full bg-white px-5 text-[11px] font-normal uppercase tracking-[0.16em] sm:h-11.75 sm:px-7.5 sm:text-xs sm:tracking-[0.2em] text-edge-black transition-colors duration-300 hover:bg-soft-ivory"
               >
                 Schedule Call
               </Link>
               <Link
                 href="/work"
-                className="inline-flex h-11.75 items-center rounded-full border border-white/30 px-7.5 text-xs font-semibold uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:border-white/60"
+                className="inline-flex h-11 items-center rounded-full border border-white/30 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] sm:h-11.75 sm:px-7.5 sm:text-xs sm:tracking-[0.2em] text-white transition-colors duration-300 hover:border-white/60"
               >
                 Case Studies
               </Link>
@@ -619,5 +620,183 @@ export default function Hero() {
         />
       </div>
     </section>
+  );
+}
+
+// Phones and tablets: a still layout instead of the pinned scroll sequence. The wall fills the first
+// screen and fades out under the copy; photos only (no background video) to keep mobile data light.
+// The showreel plays in its own card below.
+const MOBILE_WALL = [
+  { direction: "up", duration: 46, tiles: COLUMNS[0].tiles.filter((t) => t.type === "image") },
+  { direction: "down", duration: 40, tiles: COLUMNS[3].tiles.filter((t) => t.type === "image") },
+  { direction: "up", duration: 52, tiles: COLUMNS[2].tiles.filter((t) => t.type === "image") },
+];
+
+function DriftColumn({ column }) {
+  return (
+    <div className="relative h-full overflow-hidden">
+      <div
+        className={cn("drift-column will-change-transform", column.direction === "down" && "[animation-direction:reverse]")}
+        style={{ animationDuration: `${column.duration}s` }}
+      >
+        {[...column.tiles, ...column.tiles].map((tile, i) => (
+          <Tile key={i} tile={tile} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileShowreel() {
+  const [index, setIndex] = useState(0);
+  const [muted, setMuted] = useState(true);
+  const touchX = useRef(null);
+  const film = FILMS[index];
+  const [category, title] = film.label.split("|").map((s) => s.trim());
+  const go = (step) => setIndex((i) => (i + step + FILMS.length) % FILMS.length);
+  const SoundIcon = muted ? VolumeX : Volume2;
+  const control =
+    "flex size-9 items-center justify-center rounded-full border border-white/40 bg-edge-black/30 text-white backdrop-blur-sm transition-colors duration-300 active:border-white";
+
+  return (
+    <div className="px-4 pb-6 pt-4 sm:px-6">
+      <div
+        className="surface-dark relative aspect-16/10 overflow-hidden rounded-2xl bg-black-depth"
+        onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+        onTouchEnd={(e) => {
+          const dx = e.changedTouches[0].clientX - (touchX.current ?? 0);
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+        }}
+      >
+        <AnimatePresence initial={false}>
+          <motion.video
+            key={film.src}
+            src={film.src}
+            poster={film.poster}
+            autoPlay
+            muted={muted}
+            loop
+            playsInline
+            preload="metadata"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-0 size-full object-cover"
+          />
+        </AnimatePresence>
+        <div className="wall-fade-bottom pointer-events-none absolute inset-x-0 bottom-0 h-1/2" />
+
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          className={cn(control, "absolute right-3 top-3")}
+          aria-label={muted ? "Sound on" : "Sound off"}
+        >
+          <SoundIcon size={15} strokeWidth={1.75} />
+        </button>
+        <button type="button" onClick={() => go(-1)} className={cn(control, "absolute left-3 top-1/2 -translate-y-1/2")} aria-label="Previous film">
+          <ChevronLeft size={17} strokeWidth={1.75} />
+        </button>
+        <button type="button" onClick={() => go(1)} className={cn(control, "absolute right-3 top-1/2 -translate-y-1/2")} aria-label="Next film">
+          <ChevronRight size={17} strokeWidth={1.75} />
+        </button>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={film.label}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.35 }}
+            className="absolute bottom-4 left-4 right-14"
+          >
+            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-edge-stone">{category}</p>
+            <p className="mt-1 font-display text-xl leading-tight text-white">{title}</p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="mt-4 flex justify-center gap-1.5">
+        {FILMS.map((f, i) => (
+          <button
+            key={f.src}
+            type="button"
+            onClick={() => setIndex(i)}
+            aria-label={`Show film ${i + 1}`}
+            className={cn("h-1.5 rounded-full transition-all duration-500", i === index ? "w-5 bg-edge-stone" : "w-1.5 bg-graphite")}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileHero() {
+  return (
+    <section className="relative overflow-hidden bg-edge-black">
+      <div className="relative flex h-[calc(100svh-82px)] min-h-140 flex-col justify-end">
+        <div aria-hidden="true" className="absolute inset-x-4 inset-y-0 grid grid-cols-3 gap-2 sm:inset-x-6 sm:gap-3">
+          {MOBILE_WALL.map((column, i) => (
+            <DriftColumn key={i} column={column} />
+          ))}
+        </div>
+        <div aria-hidden="true" className="wall-fade-top pointer-events-none absolute inset-x-0 top-0 h-12" />
+        <div aria-hidden="true" className="hero-fade-mobile pointer-events-none absolute inset-x-0 bottom-0 h-[68%]" />
+
+        <div className="relative px-6 pb-8 sm:px-8">
+          <motion.div
+            {...fadeUp(0.2)}
+            className="inline-flex h-6 items-center gap-1.5 rounded-full border border-white/25 bg-edge-black/40 px-2.5 backdrop-blur-sm"
+          >
+            <Award size={10} strokeWidth={2} className="text-edge-stone" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-white">#1 for growth-driven brands</span>
+          </motion.div>
+
+          <motion.h1 {...fadeUp(0.35)} className="mt-4 font-display font-normal text-white">
+            <span className="block text-[clamp(1.6rem,7.4vw,2.6rem)] leading-[1.15]">We help businesses with</span>
+            <span className="block min-h-[1.15em] whitespace-nowrap text-[clamp(3rem,14.5vw,5.5rem)] leading-[1.15] text-edge-stone">
+              <Typewriter />
+            </span>
+          </motion.h1>
+
+          <motion.p {...fadeUp(0.5)} className="mt-2 text-[10.5px] font-medium leading-relaxed text-white sm:text-[13px]">
+            Trusted by 1000+ brands across India, UAE, Australia, US, UK, Japan and more
+          </motion.p>
+
+          <motion.div {...fadeUp(0.65)} className="mt-6 flex flex-wrap items-center gap-3">
+            <Link
+              href="/contact"
+              className="inline-flex h-11.5 items-center rounded-full bg-white px-5.5 text-[11px] uppercase tracking-[0.14em] text-edge-black"
+            >
+              Schedule Call
+            </Link>
+            <Link
+              href="/work"
+              className="inline-flex h-11.5 items-center rounded-full border border-white/30 px-5.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white"
+            >
+              Case Studies
+            </Link>
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="border-t border-graphite/50">
+        <MobileShowreel />
+      </div>
+    </section>
+  );
+}
+
+export default function Hero() {
+  const isDesktop = useIsDesktop();
+
+  return (
+    <>
+      <div className="hidden lg:block">{isDesktop && <DesktopHero />}</div>
+      <div className="lg:hidden">
+        <MobileHero />
+      </div>
+    </>
   );
 }

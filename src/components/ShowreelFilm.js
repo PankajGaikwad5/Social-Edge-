@@ -40,7 +40,7 @@ export default function ShowreelFilm({ progress, active, index, onIndexChange, s
   return (
     <motion.div
       style={{ opacity }}
-      className={cn("absolute inset-0 z-20", active ? "pointer-events-auto" : "pointer-events-none")}
+      className={cn("surface-dark absolute inset-0 z-20", active ? "pointer-events-auto" : "pointer-events-none")}
     >
       {/* Next film + progress dots */}
       <div className="absolute right-6 top-1/2 flex -translate-y-1/2 flex-col items-center gap-4 lg:right-10">
