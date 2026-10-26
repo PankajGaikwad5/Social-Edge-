@@ -172,3 +172,25 @@ body {
     transparent 74%
   );
 }
+
+/* About chapter cards: soft light from the top edge. The hover glow is its own layer so it can fade */
+.chapter-card {
+  isolation: isolate;
+  background:
+    radial-gradient(70% 55% at 50% 0%, color-mix(in srgb, var(--edge-stone) 10%, transparent), transparent 75%),
+    linear-gradient(135deg, var(--depth-from), var(--depth-to));
+}
+.chapter-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(95% 80% at 50% 0%, color-mix(in srgb, var(--edge-stone) 20%, transparent), transparent 80%);
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.chapter-card:hover {
+  box-shadow: 0 28px 60px -30px color-mix(in srgb, var(--edge-stone) 55%, transparent);
+}
+.chapter-card:hover::after { opacity: 1; }

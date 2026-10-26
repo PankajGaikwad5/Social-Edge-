@@ -1,7 +1,11 @@
 import AboutHero from "@/components/AboutHero";
 import AboutStats from "@/components/AboutStats";
 import AboutValues from "@/components/AboutValues";
+import AboutFaq from "@/components/AboutFaq";
+import AboutMore from "@/components/AboutMore";
+import AboutTeam from "@/components/AboutTeam";
 import AboutVision from "@/components/AboutVision";
+import SayHello from "@/components/SayHello";
 
 export const metadata = {
   title: "About | Social Edge",
@@ -16,6 +20,10 @@ export default function AboutPage() {
       <AboutStats />
       <AboutValues />
       <AboutVision />
+      <AboutTeam />
+      <AboutFaq />
+      <AboutMore />
+      <SayHello/>
     </main>
   );
 }

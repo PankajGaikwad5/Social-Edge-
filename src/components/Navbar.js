@@ -128,7 +128,7 @@ function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className={iconButton}
+      className={`${iconButton} cursor-pointer`}
       aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
     >
       <Icon size={15} strokeWidth={1.75} className={cn("transition-opacity duration-300", !theme && "opacity-0")} />
@@ -206,15 +206,15 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2 sm:gap-3 lg:gap-5 xl:gap-10">
-            <button
+            {/* <button
               type="button"
               onClick={() => setSearchOpen((v) => !v)}
               className={iconButton}
               aria-label="Search"
             >
               <Search size={15} strokeWidth={1.75} />
-            </button>
-            <div>
+            </button> */}
+            <div className="cursor-pointer">
               <ThemeToggle />
             </div>
             <Link
