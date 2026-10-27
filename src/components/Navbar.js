@@ -52,7 +52,7 @@ export const SERVICE_GROUPS = [
   {
     title: "Tech Solution",
     links: [
-      { label: "Website Development", href: "/services/website-development" },
+      { label: "Custom Web Development", href: "/services/custom-web-development" },
       { label: "Email Marketing", href: "/services/email-marketing" },
       { label: "Marketing Automation", href: "/services/marketing-automation" },
     ],

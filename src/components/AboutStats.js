@@ -15,7 +15,8 @@ const STATS = [
   { value: 95, suffix: "%", label: "Client retention", body: "Most brands that start with us are still with us years later." },
 ];
 
-export default function AboutStats() {
+// Service pages pass their own figures; the About page uses the defaults
+export default function AboutStats({ stats = STATS }) {
   const sectionRef = useRef(null);
 
   useGSAP(
@@ -94,7 +95,7 @@ export default function AboutStats() {
       </svg>
 
       <ul className="stats-grid relative mx-auto grid max-w-372 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-        {STATS.map((stat) => (
+        {stats.map((stat) => (
           <li
             key={stat.label}
             className="stat-card group rounded-md border border-graphite/50 bg-edge-black p-7 transition-[border-color,transform] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-1 hover:border-graphite lg:p-8"

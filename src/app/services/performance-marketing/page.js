@@ -1,29 +1,35 @@
-import SelectedWork from "@/components/SelectedWork";
-import ServiceCases from "@/components/ServiceCases";
-import ServiceHero from "@/components/ServiceHero";
-import ServiceNext from "@/components/ServiceNext";
-import { PROOF_CASES, SELECTED_FILMS } from "@/lib/sampleWork";
-
-const HREF = "/services/performance-marketing";
+import AboutFaq from "@/components/AboutFaq";
+import AboutStats from "@/components/AboutStats";
+import ExploreMore from "@/components/ExploreMore";
+import RoasChart from "@/components/RoasChart";
+import ServiceGuide from "@/components/ServiceGuide";
+import ServiceIncluded from "@/components/ServiceIncluded";
+import ServiceProcess from "@/components/ServiceProcess";
+import ServiceSplitHero from "@/components/ServiceSplitHero";
+import { EXPLORE, GUIDE, INCLUDED, PROCESS, STATS } from "@/lib/brandServiceContent";
 
 export const metadata = {
   title: "Performance Marketing | Social Edge",
-  description: "Performance marketing by Social Edge: paid media run on numbers, from ROAS and CPL to revenue.",
+  description: "Performance marketing in India from Social Edge: ROI-focused campaigns, optimised in real time.",
 };
 
+// Every section after the hero shares the Social Media Management copy
 export default function PerformanceMarketingPage() {
   return (
     <main className="flex-1">
-      <ServiceHero
-        href={HREF}
-        title="Performance Marketing"
+      <ServiceSplitHero
+        crumb="Performance Marketing"
+        eyebrow="Performance marketing in India"
         lines={["Performance", "Marketing"]}
-        tags={["7x ROAS", "5L+ leads", "ROI-driven campaigns"]}
-        blurb="Paid media run on numbers: ROAS, CPL and revenue."
+        body="ROI-focused campaigns, optimised in real time."
+        visual={<RoasChart />}
       />
-      <SelectedWork href={HREF} title="Selected work" items={SELECTED_FILMS} />
-      <ServiceCases title="Proof, in three" cases={PROOF_CASES} />
-      <ServiceNext current={HREF} />
+      <AboutStats stats={STATS} />
+      <ServiceIncluded title="What's included" items={INCLUDED} />
+      <ServiceProcess eyebrow="How we work" lines={["Four steps,", "no surprises."]} steps={PROCESS} />
+      <AboutFaq />
+      <ExploreMore links={EXPLORE} />
+      <ServiceGuide {...GUIDE} />
     </main>
   );
 }
