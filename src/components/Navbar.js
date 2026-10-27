@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { label: "Work", href: "/work" },
   { label: "Blog", href: "/blog" },
   { label: "Locations", href: "/locations" },
-  { label: "Career", href: "/career" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const SERVICES = [
