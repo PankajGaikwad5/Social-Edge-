@@ -14,7 +14,7 @@ const EASE = "ease-[cubic-bezier(0.4,0,0.2,1)]";
 
 // Per-card colours follow the reference (approved off-palette exception, like the About values cards).
 // Figures and project chips are samples: replace with real work before launch.
-const SERVICES = [
+export const SERVICES = [
   { title: "Social Media Marketing", slug: "social-media", stat: "1.3B views", reach: "2.4B views, 12x growth", colors: ["#e8457c", "#f4a585", "#6e1d3a"] },
   { title: "PR & Influencer Marketing", slug: "pr-influencer", stat: "85M+ impressions", reach: "320+ collabs, 3.8x ROI", colors: ["#6d4cff", "#a48bff", "#33248f"] },
   { title: "Campaign Shoot", slug: "campaign-shoot", stat: "62 pieces", reach: "72+ shoots, 3.6x CTR", colors: ["#d9752a", "#f4bf73", "#5e2e10"] },
