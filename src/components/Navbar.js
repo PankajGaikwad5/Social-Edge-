@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
+export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services", hasMenu: true },

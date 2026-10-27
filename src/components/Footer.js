@@ -8,7 +8,7 @@ import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import { useLenis } from "lenis/react";
 import { ArrowUp, Send } from "lucide-react";
-import { SERVICES } from "@/components/WhatWeDo";
+import { NAV_LINKS, SERVICE_GROUPS } from "@/components/Navbar";
 import { CALENDAR, EMAIL, SOCIALS } from "@/lib/contact";
 import SayHello from "@/components/SayHello";
 import { cn } from "@/lib/utils";
@@ -25,79 +25,15 @@ const PHRASES = [
   { lines: ["moves", "culture."], tone: "text-edge-stone-60" },
 ];
 
+// Mirrors the navbar: its page links (plus Career) and the Services menu groups
 const COLUMNS = [
-  {
-    title: "Solutions",
-    large: true,
-    links: SERVICES.map((s) => ({ label: s.title, href: s.href })),
-  },
   {
     title: "Company",
     large: true,
-    links: [
-      { label: "Home", href: "/" },
-      { label: "About us", href: "/about" },
-      { label: "Work", href: "/work" },
-      { label: "Services", href: "/services" },
-      { label: "Blog", href: "/blog" },
-      { label: "Freelance", href: "/career/freelance" },
-      { label: "Full Time", href: "/career/full-time" },
-    ],
+    links: [...NAV_LINKS.filter((l) => !l.hasMenu), { label: "Career", href: "/career" }],
   },
-  {
-    title: "Brand solutions",
-    links: [
-      "Social Media Management",
-      "Original Content and Copywriting",
-      "Graphic Design, Iconography and Illustrations",
-      "Video Editing and Animation",
-      "Film Production, AVs and Product Photography",
-      "Campaign Planning",
-      "Influencer Marketing & ORM",
-      "Print, OOH, Mainline Advertising",
-      "New Brand Launch and Rebranding",
-    ],
-  },
-  {
-    title: "Tech solutions",
-    links: [
-      "Custom Web Development",
-      "Web Personalization",
-      "UI/UX",
-      "Search Engine Optimization",
-      "CRM & ERP Solutions",
-      "E-Commerce",
-      "Email Marketing",
-      "Marketing Automation",
-      "Chatbots",
-    ],
-  },
-  {
-    title: "Media solutions",
-    links: ["Media Buying", "Media Planning", "Performance Marketing", "MarTech for Media"],
-  },
-  {
-    title: "Film and photography",
-    links: [
-      "Product Photoshoot",
-      "UGC (User Generated Content)",
-      "Model Shoot",
-      "Creative Shoots",
-      "Campaign Shoots",
-      "Ad Films",
-      "Factory Shoots",
-      "Interviews",
-      "Testimonials",
-    ],
-  },
-].map((col) => ({
-  ...col,
-  links: col.links.map((link) =>
-    typeof link === "string"
-      ? { label: link, href: `/services#${link.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` }
-      : link
-  ),
-}));
+  ...SERVICE_GROUPS.map((group) => ({ title: group.title, links: group.links })),
+];
 
 // lucide dropped brand marks, so these follow its outline style (24 grid, round caps)
 const SOCIAL_ICONS = {
@@ -327,9 +263,9 @@ export default function Footer() {
   
           <div className="footer-rule h-px origin-left bg-graphite/60" />
   
-          <nav aria-label="Footer" className="footer-cols grid grid-cols-2 gap-x-8 gap-y-12 py-16 sm:grid-cols-3 lg:grid-cols-[1.35fr_1fr_1.3fr_1.3fr_1.3fr_1.1fr] lg:gap-x-0 lg:pb-18 lg:pt-19">
+          <nav aria-label="Footer" className="footer-cols grid grid-cols-2 gap-x-8 gap-y-12 py-16 sm:grid-cols-3 lg:grid-cols-[0.8fr_1.2fr_1.2fr_1.1fr_1.1fr] lg:gap-x-0 lg:pb-18 lg:pt-19">
             {COLUMNS.map((col) => (
-              <div key={col.title} className={cn("footer-col lg:pr-8", !col.large && "hidden sm:block", col.title === "Company" && "max-sm:text-right")}>
+              <div key={col.title} className="footer-col lg:pr-8">
                 <h3 className="text-[11px] font-medium uppercase tracking-[0.24em] text-edge-stone">{col.title}</h3>
                 <ul className={cn("mt-5 flex flex-col", col.large ? "gap-1.5" : "gap-[9px]")}>
                   {col.links.map((link) => (
@@ -337,7 +273,7 @@ export default function Footer() {
                       <Link
                         href={link.href}
                         className={cn(
-                          "inline-block text-white transition-[color,transform] duration-500 hover:translate-x-1 hover:text-edge-stone-60",
+                          "inline-block text-white transition-[color,translate] duration-500 hover:translate-x-1 hover:text-edge-stone-60",
                           EASE_OUT,
                           col.large ? "text-sm leading-snug sm:text-[15px]" : "text-[13px] leading-snug"
                         )}
