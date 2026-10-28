@@ -39,6 +39,8 @@ Read this together with `AGENTS.md` and `BRAND_GUIDELINES.md` before touching an
 | `/about` | `src/app/about/page.js` | `AboutHero` → `AboutStats` → `AboutValues` → `AboutVision` → `AboutTeam` → `AboutFaq` → `AboutMore` |
 | `/work` | `src/app/work/page.js` | `WorkHero` → `WorkCases` → `WorkServices` → `WorkIndustries` → `WorkStudio` |
 | `/contact` | `src/app/contact/page.js` | `ContactForm` (intro + direct links with `#schedule`, form → "send with" step: email app / Gmail / Outlook.com) |
+| `/blog` | `src/app/blog/page.js` | `BlogIndex` (header, category pills, featured carousel through every post in the filter, 4-col grid of the rest, 15 per page, numbered pagination). Posts in `lib/blogPosts.js` |
+| `/career` | `src/app/career/page.js` | `CareerHero` → `ServiceIncluded` ("Why Social Edge" cards, copy in the page file) → `AboutTeam` (with `lines` + `cta` props) |
 | `/services/*` | one folder per service | see below |
 | all | `src/app/layout.js` | `Navbar`, page, `Footer` (which renders `SayHello` first) inside `SmoothScroll` |
 
@@ -63,7 +65,9 @@ Notes on the trickier ones:
 - `lib/contact.js`: email, WhatsApp, calendar link, socials (Say Hello, Footer, contact page).
 - `lib/serviceTheme.js`: `serviceTheme(href)` → `{ number, colors }` from the service's position in the navbar menu (colours from `WorkServices` `SERVICES`).
 - `lib/sampleWork.js`: shared sample case lists (`PROOF_CASES`, `WEB_CASES`, `SELECTED_FILMS`).
-- `lib/brandServiceContent.js`: `STATS`, `INCLUDED`, `PROCESS`, `EXPLORE`, `GUIDE` for split-hero service pages.
+- `lib/brandServiceContent.js`: `STATS`, `INCLUDED`, `PROCESS`, `EXPLORE`, `GUIDE` for split-hero service pages. The guide's "Latest" articles come from `lib/blogPosts.js` via `postsBySlug`.
+- `lib/blogPosts.js`: `BLOG_POSTS` (newest first, `no` counts up from the oldest), `BLOG_CATEGORIES`, `postsBySlug`.
+- `components/BlogCover.js`: the ivory grid-paper post cover (blog cards, featured card, ServiceGuide articles). Hover timelines move its `.cover-blob`.
 - `components/ServiceSplitHero.js`: `crumb` (optional breadcrumb), `eyebrow`, `lines`, `body`, `visual`.
 - `AboutStats` takes an optional `stats` prop (About uses its defaults).
 - Recurring patterns: eyebrow label with a stone dot; masked headline lines that rise in; breadcrumb row on inner pages.
@@ -98,10 +102,11 @@ Notes on the trickier ones:
 
 - All stats, testimonials, case studies, client names/handles/sites (many from the Sage Media reference), office addresses/phones, email (`hello@socialedge.in`, the contact form sends there), WhatsApp number, social URLs (`lib/contact.js`).
 - Locations disagree: service pages say Jaipur, Mumbai, Dubai (reference copy); About/Say Hello say Mumbai, Pune, Dubai.
-- Stock media: Unsplash photos, Mixkit videos, About hero video (Sage Media URL).
+- Stock media: Unsplash photos (incl. the Careers hero, which should be the real team photo), Mixkit videos, About hero video (Sage Media URL).
 - Draft copy: all FAQ answers, Social Media Management FAQ questions 01–03/10/11, hero copy for Event Shoot / Project Shoot / Interviews & Testimonials, Draft Typer lines 2–3, all hero-panel labels and figures.
+- Blog posts (`lib/blogPosts.js`): 19 placeholder posts. Titles/excerpts of 12 follow the Sage Media reference (excerpts completed where cut off), 4 are invented drafts, 3 are the existing service-guide articles.
 - Website Development grid shows 10 sites while the eyebrow says 15 (only 10 were visible in the reference).
 
 ## 9. Not built yet (links point here)
 
-`/services` index, related-service links that aren't in the menu (`/services/influencer-marketing`, `/services/martech`, `/services/media-buying`, `/services/media-planning`), `/work/<slug>`, `/work/industries/<slug>`, `/blog` and `/blog/<slug>`, `/locations` (incl. `#jaipur` etc.), `/career` (+ `/career/freelance`, `/career/full-time`, still linked from Footer and AboutTeam), `/terms`, `/privacy`.
+`/services` index, related-service links that aren't in the menu (`/services/influencer-marketing`, `/services/martech`, `/services/media-buying`, `/services/media-planning`), `/work/<slug>`, `/work/industries/<slug>`, `/blog/<slug>` (post pages), `/locations` (incl. `#jaipur` etc.), `/career/full-time` and `/career/freelance` (linked from the Careers page buttons), `/terms`, `/privacy`.

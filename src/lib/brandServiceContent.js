@@ -1,4 +1,5 @@
 // Section copy shared by the Brand Solution service pages (from the Social Media Management reference)
+import { postsBySlug } from "@/lib/blogPosts";
 
 // Sample figures from the reference: confirm before launch
 export const STATS = [
@@ -97,32 +98,11 @@ export const CHAPTERS = [
     id: "latest",
     type: "articles",
     title: "Latest on Brand Solutions",
-    articles: [
-      {
-        title: "How to Build a B2B Social Media Strategy That Actually Generates Leads in India",
-        category: "Brand Solutions",
-        no: 47,
-        read: "5 min read",
-        date: "15 Mar 2026",
-        href: "/blog/b2b-social-media-strategy-india",
-      },
-      {
-        title: "The Real Cost of Social Media Management in India (2026 Pricing Guide)",
-        category: "Brand Solutions",
-        no: 127,
-        read: "4 min read",
-        date: "24 Jun 2026",
-        href: "/blog/social-media-management-cost-india-2026",
-      },
-      {
-        title: "5 Costly Social Media Mistakes Indian Brands Are Making Right Now",
-        category: "Brand Solutions",
-        no: 110,
-        read: "4 min read",
-        date: "11 Jun 2026",
-        href: "/blog/social-media-mistakes-indian-brands",
-      },
-    ],
+    articles: postsBySlug([
+      "b2b-social-media-strategy-india",
+      "social-media-management-cost-india-2026",
+      "social-media-mistakes-indian-brands",
+    ]),
   },
   {
     id: "related",

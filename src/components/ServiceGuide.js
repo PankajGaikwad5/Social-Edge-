@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useLenis } from "lenis/react";
 import { ArrowRight, ArrowUpRight, MapPin, PenLine, Plus, Quote, Sparkle } from "lucide-react";
+import BlogCover from "@/components/BlogCover";
 import { leftwardMarquee } from "@/lib/marquee";
 import { cn } from "@/lib/utils";
 
@@ -328,36 +329,7 @@ function ArticleCard({ article }) {
         onMouseLeave={() => hover.current?.timeScale(1.6).reverse()}
         className="flex w-full flex-col rounded-3xl border border-white/10 bg-black-depth p-2.5 pb-7"
       >
-        <div
-          style={{
-            backgroundColor: "#F4F3EF",
-            backgroundImage:
-              "linear-gradient(rgba(9,9,9,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(9,9,9,0.06) 1px, transparent 1px)",
-            backgroundSize: "26px 26px",
-          }}
-          className="relative flex aspect-[1.75] flex-col justify-between overflow-hidden rounded-2xl px-6 pb-5 pt-5 text-ink"
-        >
-          <span aria-hidden className="cover-blob pointer-events-none absolute left-[18%] top-[30%] size-44 rounded-full bg-edge-stone-60/70 blur-3xl" />
-          <span aria-hidden className="pointer-events-none absolute -bottom-[0.3em] right-4 font-display text-[11rem] leading-none text-edge-stone/15">
-            S
-          </span>
-
-          <span className="relative flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.22em] text-ink/55">
-            <span className="flex items-center gap-2">
-              <span className="h-px w-5 bg-ink/40" />
-              {article.category}
-            </span>
-            <span className="normal-case tracking-[0.08em] text-ink/75">No. {article.no}</span>
-          </span>
-
-          <span className="relative">
-            <span className="block max-w-[22ch] font-display text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">{article.title}</span>
-            <span className="mt-3 flex justify-between text-[9px] font-medium uppercase tracking-[0.2em] text-ink/45">
-              <span>Social Edge · Blog</span>
-              <span>{article.read}</span>
-            </span>
-          </span>
-        </div>
+        <BlogCover post={article} />
 
         <div className="px-4">
           <p className="mt-6 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-edge-stone">

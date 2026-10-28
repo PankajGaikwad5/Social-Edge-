@@ -46,7 +46,14 @@ function Row({ hidden }) {
   );
 }
 
-export default function AboutTeam() {
+const LINES = [
+  { text: "The brains", accent: false },
+  { text: "behind", accent: false },
+  { text: "the magic", accent: true },
+];
+
+// Careers reuses this with its own heading split and button
+export default function AboutTeam({ lines = LINES, cta = { label: "Join our team", href: "/career" } }) {
   const sectionRef = useRef(null);
 
   useGSAP(
@@ -98,11 +105,7 @@ export default function AboutTeam() {
       <div className="mx-auto max-w-372">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
           <h2 className="team-heading font-display text-[11vw] uppercase leading-[1.02] tracking-tight text-white sm:text-[clamp(3rem,4.6vw,5.5rem)]">
-            {[
-              { text: "The brains", accent: false },
-              { text: "behind", accent: false },
-              { text: "the magic", accent: true },
-            ].map((line) => (
+            {lines.map((line) => (
               <span key={line.text} className="block overflow-hidden pb-[0.06em]">
                 <span className={line.accent ? "team-line-inner block text-edge-stone-60" : "team-line-inner block"}>
                   {line.text}
@@ -119,11 +122,11 @@ export default function AboutTeam() {
 
             <Magnetic className="team-cta mt-10 lg:mt-auto">
               <Link
-                href="/career"
+                href={cta.href}
                 className="group relative inline-flex h-11 items-center gap-3 overflow-hidden rounded-full border border-white/40 px-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition-colors duration-500 hover:border-white hover:text-edge-black"
               >
                 <span className="absolute inset-0 translate-y-full rounded-full bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-y-0" />
-                <span className="relative">Join our team</span>
+                <span className="relative">{cta.label}</span>
                 <ArrowRight size={14} strokeWidth={1.75} className="relative transition-transform duration-500 group-hover:translate-x-1" />
               </Link>
             </Magnetic>
